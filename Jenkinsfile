@@ -8,10 +8,9 @@ properties([ parameters([
 
 // Environment Variables.
 env.region = REGION
-env.cluster_name = CLUSTER_NAME
+env.environment = CLUSTER_NAME
 env.min_node_count = WORKER_MIN_NODE_COUNT
 env.max_node_count = WORKER_MAX_NODE_COUNT
-env.instance_size = WORKER_NODE_SIZE
 env.node_vm_size = WORKER_NODE_SIZE
 
 pipeline {
@@ -31,12 +30,12 @@ pipeline {
         }
         stage('Terraform init'){
             steps{
-              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform init"
+              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.environment='${env.environment}' && export TF_VAR_env.min_node_count='${env.min_node_count}' && export TF_VAR_env.max_node_count='${env.max_node_count}' && export TF_VAR_env.node_vm_size='${env.node_vm_size}' && terraform init"
             }
         }
         stage('Terraform plan'){
             steps{
-              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform plan"
+              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.environment='${env.environment}' && export TF_VAR_env.min_node_count='${env.min_node_count}' && export TF_VAR_env.max_node_count='${env.max_node_count}' && export TF_VAR_env.node_vm_size='${env.node_vm_size}' && terraform plan"
             }
         }
         stage('Approval') {
@@ -48,7 +47,7 @@ pipeline {
         }
         stage('Terraform apply'){
             steps{
-               sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform apply -input=false myplan"   
+               sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.environment='${env.environment}' && export TF_VAR_env.min_node_count='${env.min_node_count}' && export TF_VAR_env.max_node_count='${env.max_node_count}' && export TF_VAR_env.node_vm_size='${env.node_vm_size}' && terraform apply -input=false myplan"   
             }
         }
     }
